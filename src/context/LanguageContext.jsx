@@ -8,7 +8,11 @@ export const translations = {
     tendencias: "Tendencias",
     buscar: "Buscar artista...",
     iniciarSesion: "INICIAR SESIÓN",
-    enciclopedia: "Enciclopedia Musical"
+    enciclopedia: "Enciclopedia Musical",
+    descubrirPlaceholder: "¿A quién quieres escuchar hoy?",
+    botonBuscar: "Buscar",
+    etiquetaTendencias: "Tendencias:"
+
   },
   en: {
     inicio: "Home",
@@ -16,7 +20,11 @@ export const translations = {
     tendencias: "Trending",
     buscar: "Search artist...",
     iniciarSesion: "LOGIN",
-    enciclopedia: "Music Encyclopedia"
+    enciclopedia: "Music Encyclopedia",
+    descubrirPlaceholder: "Who do you want to listen to today?",
+    botonBuscar: "Search",
+    etiquetaTendencias: "Trending:"
+
   }
 };
 

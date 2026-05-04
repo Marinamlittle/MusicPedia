@@ -27,7 +27,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-[#121015] border-b border-zinc-800/50 backdrop-blur-xl h-25 flex items-center px-8">
       
       {/* CONTENEDOR PRINCIPAL */}
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full flex items-center justify-between ">
         
         {/* === SECCIÓN IZQUIERDA: LOGOTIPO === */}
         <Link 
@@ -36,14 +36,14 @@ export default function Navbar() {
           className="flex items-center gap-3 group decoration-transparent md:ml-16 lg:ml-24"
         >
           {/* LOGO */}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 text-[#89888A] group-hover:text-[#4D88FF] group-hover:scale-110 transition-all duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-11 h-11 text-[#89888A] group-hover:text-[#4D88FF] group-hover:scale-110 transition-all duration-300">
             <path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/>
           </svg>
           
           <div className="flex flex-col">
-            <h2 className="text-xl font-bold text-white group-hover:text-zinc-300 transition-all duration-300 tracking-widest group-hover:tracking-[0.15em] leading-none">     
+            <h2 className="text-2xl font-bold text-white group-hover:text-zinc-300 transition-all duration-300 tracking-widest group-hover:tracking-[0.11em] leading-none">     
               Music
-              <span className="text-[#4D88FF] group-hover:text-[#4168a3] transition-colors duration-300">Pedia</span>
+              <span className=" text-2xl font-semibold text-[#4D88FF] group-hover:text-gray-400 transition-colors duration-900">Pedia</span>
             </h2>        
           </div>
         </Link>
