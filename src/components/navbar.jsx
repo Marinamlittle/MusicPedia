@@ -36,7 +36,7 @@ export default function Navbar() {
           className="flex items-center gap-3 group decoration-transparent md:ml-16 lg:ml-24"
         >
           {/* LOGO */}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-11 h-11 text-[#89888A] group-hover:text-[#4D88FF] group-hover:scale-110 transition-all duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-[#89888A] group-hover:text-[#4D88FF] group-hover:scale-110 transition-all duration-300">
             <path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/>
           </svg>
           
@@ -52,7 +52,7 @@ export default function Navbar() {
         <div className="flex items-center gap-6 md:gap-8 md:pr-40">
           
           {/* 1. EL BUSCADOR  */}
-          <div className=" hidden md:flex items-center ">
+          <div className=" flex md:hidden items-center ">
             <form 
               onSubmit={manejarBusqueda} 
               className={`overflow-hidden transition-all duration-300 ease-in-out flex items-center ${
@@ -84,7 +84,7 @@ export default function Navbar() {
             {/* Botón principal */}
             <div 
               onClick={() => setMenuIdiomaAbierto(!menuIdiomaAbierto)} 
-              className="flex items-center gap-1 text-sm font-bold text-white hover:text-[#4D88FF] hover:-translate-y-1 cursor-pointer transition-all duration-300"
+              className="flex items-center gap-1 text-sm font-bold text-white bg-white/5 hover:bg-[#4D88FF]/10 hover:text-[#4D88FF] px-4 py-2.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(77,136,255,0.15)] border border-white/5 hover:border-[#4D88FF]/30"
             >
               <span>{language === 'es' ? 'ES' : 'EN'}</span> 
               <svg className={`w-4 h-4 transition-transform duration-300 ${menuIdiomaAbierto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

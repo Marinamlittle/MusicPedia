@@ -2,14 +2,13 @@ import { useState, useMemo, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrends } from '../hooks/useTrends';
 import { LanguageContext } from '../context/LanguageContext';
-// Importamos el nuevo componente
 import { TopTrendingCard } from './TopTrendingCard'; 
-import { getTopTracks } from '../services/deezerApi'; 
+import { getTopTracks, searchTracks } from '../services/deezerApi';
 
 export default function Hero() {
   const [busqueda, setBusqueda] = useState('');
   const [sugerencias, setSugerencias] = useState([]);
-  const [topTracks, setTopTracks] = useState([]); // <-- Guardará el array completo de canciones
+  const [topTracks, setTopTracks] = useState([]);
   const navigate = useNavigate();
   const { t } = useContext(LanguageContext);
 
@@ -18,7 +17,7 @@ export default function Hero() {
     'Dua Lipa', 'The Weeknd', 'Taylor Swift', 'Bad Bunny', 'Selena Gomez', 
     'Ed Sheeran', 'BTS', 'Billie Eilish', 'Olivia Rodrigo', 'Drake',
     'Bruno Mars', 'Cardi B', 'Post Malone', 'Doja Cat', 'Harry Styles',
-    'Lizzo', 'Megan Thee Stallion', 'Travis Scott', 'Kendrick Lamar',
+    'Fifth Harmony', 'Michael Jackson', 'Travis Scott', 'Kendrick Lamar',
     'Rihanna', 'SZA', 'The Kid LAROI', 'J Balvin', 'Rosalía',
   ];
 
@@ -32,48 +31,72 @@ export default function Hero() {
       const tracks = await getTopTracks();
       if (tracks && tracks.length > 0) {
         console.log("¡Éxito! Canciones cargadas:", tracks.length);
-        setTopTracks(tracks); // <-- Guardamos TODAS las canciones
+        setTopTracks(tracks); // 
       }
     };
     fetchDeezerTop();
   }, []);
 
-  // --- LÓGICA DE BÚSQUEDA EN TIEMPO REAL ---
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (busqueda.trim().length > 1) {
-        const filtrados = misFavoritos.filter(artista =>
-          artista.toLowerCase().includes(busqueda.toLowerCase())
-        );
-        setSugerencias(filtrados.slice(0, 5));
-      } else {
+ // --- LÓGICA DE BÚSQUEDA EN TIEMPO REAL ---
+ useEffect(() => {
+  const delayDebounceFn = setTimeout(async () => {
+    if (busqueda.trim().length > 1) {
+      try {
+        // 1. Consultamos a la API
+        const resultados = await searchTracks(busqueda);
+        const arrayResultados = Array.isArray(resultados) ? resultados : (resultados?.data || []);
+
+        // 2. Filtramos para sacar solo artistas únicos
+        const artistasVistos = new Set();
+        const sugerenciasUnicas = [];
+
+        for (const item of arrayResultados) {
+          const nombreArtista = item.artist?.name;
+          
+          if (nombreArtista && !artistasVistos.has(nombreArtista)) {
+            artistasVistos.add(nombreArtista); 
+            sugerenciasUnicas.push(item);      
+          }
+
+          if (sugerenciasUnicas.length === 5) break; 
+        }
+
+        // 3. Guardamos los 5 resultados únicos
+        setSugerencias(sugerenciasUnicas);
+        
+      } catch (error) {
+        console.error("Error obteniendo sugerencias:", error);
         setSugerencias([]);
       }
-    }, 200);
+    } else {
+      setSugerencias([]);
+    }
+  }, 300); 
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [busqueda]);
+  return () => clearTimeout(delayDebounceFn);
+}, [busqueda]);
 
-  const filasMezcladas = useMemo(() => {
-    if (!images.length) return [[], [], [], []];
-    const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
-    return [
-      images, shuffle(images), [...images].reverse(), shuffle([...images].reverse()) 
-    ];
-  }, [images]);
+// --- LAS DEMÁS FUNCIONES SE QUEDAN EXACTAMENTE IGUAL ---
 
-  const manejarBusqueda = (e) => {
-    e.preventDefault();
-    if (busqueda.trim() !== '') navigate(`/search/${busqueda}`);
-  };
+const filasMezcladas = useMemo(() => {
+  if (!images.length) return [[], [], [], []];
+  const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
+  return [
+    images, shuffle(images), [...images].reverse(), shuffle([...images].reverse()) 
+  ];
+}, [images]);
 
-  const buscarTendencia = (tendencia) => {
-    navigate(`/search/${tendencia}`);
-  };
+const manejarBusqueda = (e) => {
+  e.preventDefault();
+  if (busqueda.trim() !== '') navigate(`/search/${busqueda}`);
+};
 
-  return (
-    <section className="relative w-full h-[calc(100vh-100px)] flex flex-col items-center justify-center overflow-hidden bg-[#121015]">
-      
+const buscarTendencia = (tendencia) => {
+  navigate(`/search/${tendencia}`);
+};
+
+return (
+  <section className="relative w-full h-[calc(100vh-100px)] flex flex-col items-center justify-center overflow-hidden bg-[#121015]">
       {/* CARRUSEL DINÁMICO */}
       {!loading && (
         <div className="absolute inset-0 flex flex-col gap-4 scale-125 opacity-30 pointer-events-none justify-center">
@@ -118,19 +141,25 @@ export default function Hero() {
             </button>
           </form>
 
-          {/* DROP DOWN DE SUGERENCIAS */}
+        {/* DROP DOWN DE SUGERENCIAS */}
           {sugerencias.length > 0 && (
             <ul className="absolute top-[110%] left-0 w-full bg-zinc-900/95 backdrop-blur-2xl border border-zinc-700/50 rounded-3xl overflow-hidden shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-              {sugerencias.map((artista) => (
-                <li key={artista}>
-                  <button 
-                    onClick={() => buscarTendencia(artista)}
-                    className="w-full px-8 py-4 text-left text-white text-lg hover:bg-[#4D88FF]/20 transition-colors flex items-center gap-3"
-                  >
-                    <span className="text-zinc-300 text-sm">🔍</span> {artista}
-                  </button>
-                </li>
-              ))}
+              {sugerencias.map((item) => {
+                // Extraemos el texto y el ID del objeto que nos da la API
+                const textoSugerencia = item.artist?.name || "Sugerencia";
+                const keyId = item.id || textoSugerencia;
+
+                return (
+                  <li key={keyId}>
+                    <button 
+                      onClick={() => buscarTendencia(textoSugerencia)}
+                      className="w-full px-8 py-4 text-left text-white text-lg hover:bg-[#4D88FF]/20 transition-colors flex items-center gap-3"
+                    >
+                      <span className="text-zinc-300 text-sm">🔍</span> {textoSugerencia}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

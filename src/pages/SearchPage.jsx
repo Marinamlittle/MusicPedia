@@ -4,7 +4,7 @@ import ArtistCard from '../components/ArtistCard';
 import { useArtist } from '../hooks/useArtist';
 
 export default function SearchPage() {
-  // 1. useParams "atrapa" la palabra de la URL (ej. si la URL es /search/Queen, saca "Queen")
+  // 1. useParams "atrapa" la palabra de la URL 
   const { termino } = useParams(); 
 
   // 2. Le pasamos esa palabra a tu custom hook para que llame a la API

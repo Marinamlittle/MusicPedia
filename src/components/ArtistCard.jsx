@@ -6,7 +6,9 @@ const ArtistCard = ({ idArtist, strArtist, strArtistThumb, strGenre }) => {
 
   return (
     <Link 
-      to={`/artist/${strArtist}`} 
+      // ¡EL CAMBIO ESTÁ AQUÍ ABAJO! 
+      // Ahora usamos idArtist en lugar de strArtist
+      to={`/artist/${idArtist}`} 
       className="group flex flex-col items-center bg-zinc-800/50 p-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300 hover:-translate-y-2 cursor-pointer w-full max-w-[250px]"
     >
       {/* Contenedor de la foto (Circular y con efecto hover) */}

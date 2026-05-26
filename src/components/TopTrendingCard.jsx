@@ -73,7 +73,7 @@ export const TopTrendingCard = ({ tracks }) => {
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 pl-0.5 group-hover:scale-110 transition-transform">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 pl-0.9 group-hover:scale-110 transition-transform">
               <path d="M8 5v14l11-7z" />
             </svg>
           )}
